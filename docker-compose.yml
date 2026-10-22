@@ -1,0 +1,80 @@
+services:
+  postgis:
+    image: postgis/postgis:16-3.4
+    container_name: hexa-postgis
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-hexa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hexa_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-hexa_maps}
+    ports:
+      - '5432:5432'
+    volumes:
+      - hexa_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER:-hexa} -d $${POSTGRES_DB:-hexa_maps}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: hexa-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - hexa_redis:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: hexa-api
+    restart: unless-stopped
+    depends_on:
+      postgis:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      API_HOST: 0.0.0.0
+      API_PORT: 4000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-hexa}:${POSTGRES_PASSWORD:-hexa_dev_password}@postgis:5432/${POSTGRES_DB:-hexa_maps}
+      REDIS_URL: redis://redis:6379
+      SESSION_SECRET: ${SESSION_SECRET:-change-me-in-production-to-at-least-32-random-bytes}
+      PHOTON_BASE_URL: ${PHOTON_BASE_URL:-}
+      NOMINATIM_BASE_URL: ${NOMINATIM_BASE_URL:-}
+      OSRM_BASE_URL: ${OSRM_BASE_URL:-}
+      VALHALLA_BASE_URL: ${VALHALLA_BASE_URL:-}
+      OTP_BASE_URL: ${OTP_BASE_URL:-}
+      TOMTOM_TRAFFIC_API_KEY: ${TOMTOM_TRAFFIC_API_KEY:-}
+      MAPILLARY_ACCESS_TOKEN: ${MAPILLARY_ACCESS_TOKEN:-}
+    ports:
+      - '4000:4000'
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: hexa-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      NODE_ENV: production
+      INTERNAL_API_ORIGIN: http://api:4000
+      NEXT_PUBLIC_PMTILES_URL: ${NEXT_PUBLIC_PMTILES_URL:-}
+      NEXT_PUBLIC_SATELLITE_TILES_URL: ${NEXT_PUBLIC_SATELLITE_TILES_URL:-}
+    ports:
+      - '3000:3000'
+
+volumes:
+  hexa_pgdata:
+  hexa_redis:

@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Builds & caches
+.next/
+**/next-env.d.ts
+dist/
+build/
+out/
+coverage/
+.turbo/
+.cache/
+*.tsbuildinfo
+
+# Local runtime state & databases
+.data/
+apps/api/.data/
+
+# Environment secrets (never commit .env)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Playwright & test artifacts
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# OS & editor files
+.DS_Store
+*.log
+npm-debug.log*

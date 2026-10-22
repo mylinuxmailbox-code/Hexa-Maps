@@ -1,0 +1,17 @@
+{
+  "name": "Hexa Maps — Open-Source Navigation & Highway Intelligence",
+  "short_name": "Hexa Maps",
+  "description": "Interactive vector maps, international highway shields, turn-by-turn routing, live community traffic incidents, and offline regions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1120",
+  "theme_color": "#F59E0B",
+  "icons": [
+    {
+      "src": "/icons/hexa-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
