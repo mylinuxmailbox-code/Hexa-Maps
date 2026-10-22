@@ -1,0 +1,40 @@
+{
+  "name": "@hexa/web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0 -p 3000",
+    "build": "next build",
+    "start": "next start -H 0.0.0.0 -p 3000",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@hexa/shared": "*",
+    "@hexa/shields": "*",
+    "@tanstack/react-query": "^5.66.0",
+    "clsx": "^2.1.1",
+    "idb": "^8.0.4",
+    "lucide-react": "^0.475.0",
+    "mapillary-js": "^4.1.2",
+    "maplibre-gl": "^5.2.0",
+    "next": "15.5.28",
+    "pmtiles": "^4.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "socket.io-client": "^4.8.1",
+    "tailwind-merge": "^3.0.1",
+    "zod": "^3.24.2",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "autoprefixer": "^10.4.20",
+    "jsdom": "^26.0.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17"
+  }
+}

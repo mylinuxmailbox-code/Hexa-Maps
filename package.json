@@ -1,0 +1,40 @@
+{
+  "name": "hexa-maps",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hexa Maps — Open-source interactive mapping, international highway shield intelligence, multimodal routing, and community traffic platform",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c amber,cyan \"npm run dev -w @hexa/api\" \"npm run dev -w @hexa/web\"",
+    "dev:api": "npm run dev -w @hexa/api",
+    "dev:web": "npm run dev -w @hexa/web",
+    "build": "npm run build -w @hexa/shared && npm run build -w @hexa/shields && npm run build -w @hexa/api && npm run build -w @hexa/web",
+    "start": "concurrently -n api,web -c amber,cyan \"npm run start -w @hexa/api\" \"npm run start -w @hexa/web\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test --config apps/web/playwright.config.ts",
+    "typecheck": "npm run typecheck -w @hexa/shared && npm run typecheck -w @hexa/shields && npm run typecheck -w @hexa/api && npm run typecheck -w @hexa/web",
+    "lint": "eslint packages apps",
+    "db:migrate": "npm run db:migrate -w @hexa/api",
+    "data:bootstrap": "node scripts/bootstrap-geodata.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@playwright/test": "^1.50.0",
+    "@types/node": "^22.13.0",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.19.0",
+    "prettier": "^3.5.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0",
+    "vitest": "^3.0.5"
+  }
+}
